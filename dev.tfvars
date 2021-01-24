@@ -1,4 +1,4 @@
-subscription_id         = "fa0e3cc6-1008-498e-9846-1aa1a116e2f8"
+subscription_id         = "fa0e3cc6..."
 environment_prefix      = "dev"
 rg_location             = "westeurope"
 app_service_plan_name   = "sentia-appserviceplan"
