@@ -10,7 +10,6 @@
   }
 
 variable "rg_location" {
-
   type        = string
   description = "Resource Group location in Azure"
 }
