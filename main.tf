@@ -4,7 +4,7 @@ provider "azurerm" {
 }
 
 module "non-prod-env" {
-  source = "./modules/non-prod-env"
+  source = "./modules/webappInfra"
   subscription_id       = var.subscription_id
   environment_prefix    = var.environment_prefix
   rg_location              = var.rg_location

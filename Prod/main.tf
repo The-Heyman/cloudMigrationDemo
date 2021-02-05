@@ -3,11 +3,11 @@ provider "azurerm" {
   subscription_id = var.subscription_id
 }
 
-module "non-prod-env" {
-  source = "../modules/non-prod-env"
+module "web_app_infra" {
+  source = "../modules/webappInfra"
   subscription_id       = var.subscription_id
   environment_prefix    = var.environment_prefix
-  rg_location              = var.rg_location
+  rg_location           = var.rg_location
   cosmosdb_account_name = var.cosmosdb_account_name
   mongoDB_name          = var.mongoDB_name
   mongoDB_collection    = var.mongoDB_collection
@@ -17,8 +17,8 @@ module "non-prod-env" {
 
 # Create Azure front door for load balancing
 resource "azurerm_frontdoor" "frontdoor" {
-  name                                         = "${var.frontdoor_name}-${random_integer.ri.result}"
-  resource_group_name                          = azurerm_resource_group.rg.name
+  name                                         = "${var.frontdoor_name}-${module.web_app_infra.random_integer}"
+  resource_group_name                          = module.web_app_infra.resource_group_name
   enforce_backend_pools_certificate_name_check = false
 
   routing_rule {
@@ -43,8 +43,8 @@ resource "azurerm_frontdoor" "frontdoor" {
   backend_pool {
     name = "sentiaBackend"
     backend {
-      host_header = azurerm_app_service.webapp.default_site_hostname
-      address     = azurerm_app_service.webapp.default_site_hostname
+      host_header = module.web_app_infra.app_service_endpoint
+      address     = module.web_app_infra.app_service_endpoint
       http_port   = 80
       https_port  = 443
     }
@@ -55,6 +55,6 @@ resource "azurerm_frontdoor" "frontdoor" {
 
   frontend_endpoint {
     name                              = "primaryFrontendEndpoint"
-    host_name                         = "${var.frontdoor_name}-${random_integer.ri.result}.azurefd.net"
+    host_name                         = "${var.frontdoor_name}-${module.web_app_infra.random_integer}.azurefd.net"
   }
 }

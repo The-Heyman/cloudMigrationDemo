@@ -39,18 +39,7 @@ variable "mongoDB_collection" {
   type        = string
   description = "MongoDB Collection name in Azure"
 }
-
-variable "db_admin_login" {
-  type        = string
-  description = "DB Server login name in Azure"
-}
-
-variable "db_admin_password" {
-  type        = string
-  description = "DB Server password name in Azure"
-  }
-
-  variable "frontdoor_name" {
+ variable "frontdoor_name" {
   type        = string
   description = "Front door name in Azure"
   }
